@@ -22,7 +22,7 @@ function App() {
               <AppBar />
               <Container>
                 {routes.map((route, idx) => (
-                  <Route {...route} />
+                  <Route key={idx} {...route} />
                 ))}
               </Container>
             </div>
