@@ -27,6 +27,7 @@ type Attacks {
 type Pokemon {
   id: ID!
   name: String!
+  image: String!
   classification: String!
   types: [String]
   resistant: [String]

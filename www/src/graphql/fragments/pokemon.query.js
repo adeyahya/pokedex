@@ -4,6 +4,7 @@ export default gql`
   fragment PokemonType on Pokemon {
     id
     name
+    image
     classification
     types
     resistant

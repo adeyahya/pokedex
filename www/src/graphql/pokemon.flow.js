@@ -28,6 +28,7 @@ export type Attacks = {
 export type Pokemon = {
   id: string,
   name: string,
+  image: string,
   classification: Array<string>,
   types: Array<string>,
   resistant: Array<String>,
