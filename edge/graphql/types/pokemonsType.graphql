@@ -1,0 +1,11 @@
+type PokemonPaginatedList {
+  items: [Pokemon]
+  page: Int!
+  nextPage: Int
+  total: Int!
+  totalPage: Int!
+}
+
+type Query {
+  pokemons(page: Int, pageSize: Int): PokemonPaginatedList
+}
