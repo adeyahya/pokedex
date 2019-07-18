@@ -1,0 +1,9 @@
+{
+  "name": "pokedex-monorepo",
+  "version": "0.0.0",
+  "main": "index.js",
+  "author": "Ade Yahya Prasetyo <adeyahyaprasetyo@gmail.com>",
+  "license": "MIT",
+  "private": true,
+  "workspaces": ["www", "edge"]
+}
