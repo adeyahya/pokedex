@@ -9,7 +9,7 @@ import Container from "@material-ui/core/Container";
 import AppBar from "./components/AppBar";
 import routes from "./routes";
 
-const GRAPHQL_ENDPOINT = process.env.GRAPHQL_ENDPOINT || 'http://localhost:4000/graphql';
+const GRAPHQL_ENDPOINT = process.env.REACT_APP_GRAPHQL_ENDPOINT || 'http://localhost:4000/graphql';
 
 const cache = new InMemoryCache({
   cacheRedirects: {
