@@ -58,7 +58,7 @@ const Homepage = () => {
   }
 
   useEffect(() => {
-    if (isInitialMount) {
+    if (isInitialMount.current) {
       isInitialMount.current = false;
     } else {
       filterTimeout.current && clearTimeout(filterTimeout.current);
