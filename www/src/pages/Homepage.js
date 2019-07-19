@@ -22,6 +22,7 @@ const Grid = styled.div`
 `;
 
 const Homepage = () => {
+  const isInitialMount = useRef(true);
   const filterTimeout = useRef(null);
   const [keyword, setKeyword] = useState(null);
   const {
@@ -34,8 +35,7 @@ const Homepage = () => {
       variables: {
         page: 1,
         pageSize: 50
-      },
-      notifyOnNetworkStatusChange: true
+      }
     }
   );
 
@@ -58,19 +58,23 @@ const Homepage = () => {
   }
 
   useEffect(() => {
-    filterTimeout.current && clearTimeout(filterTimeout.current);
-    filterTimeout.current = setTimeout(() => {
-      fetchMore({
-        variables: {
-          filter: {
-            name: keyword
+    if (isInitialMount) {
+      isInitialMount.current = false;
+    } else {
+      filterTimeout.current && clearTimeout(filterTimeout.current);
+      filterTimeout.current = setTimeout(() => {
+        fetchMore({
+          variables: {
+            filter: {
+              name: keyword
+            }
+          },
+          updateQuery: (_, { fetchMoreResult }) => {
+            return fetchMoreResult;
           }
-        },
-        updateQuery: (_, { fetchMoreResult }) => {
-          return fetchMoreResult;
-        }
-      });
-    }, 300);
+        });
+      }, 300);
+    }
   }, [keyword]);
 
   const handleFilterChange = e => {

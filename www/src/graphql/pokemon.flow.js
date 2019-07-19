@@ -42,3 +42,7 @@ export type Pokemon = {
   maxHP: number,
   Attacks: Attacks
 }
+
+export type GetPokemonType = {
+  pokemon: Pokemon
+}
