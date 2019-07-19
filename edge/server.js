@@ -6,6 +6,8 @@ const typeDefs = require('./graphql/types');
 const resolvers = require('./graphql/resolvers');
 const pokemonService = require('./services/pokemon');
 
+const PORT = process.env.PORT || 4000;
+
 const server = new ApolloServer({
   typeDefs,
   resolvers,
@@ -19,6 +21,6 @@ const server = new ApolloServer({
 
 server.applyMiddleware({ app });
 
-app.listen({ port: 4000 }, () =>
-  console.log(`🚀 Server ready at http://localhost:4000${server.graphqlPath}`)
+app.listen({ port: PORT }, () =>
+  console.log(`🚀 Server ready at http://localhost:${PORT + server.graphqlPath}`)
 )

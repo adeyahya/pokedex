@@ -43,5 +43,5 @@ type Pokemon {
 }
 
 type Query {
-  pokemon(id: Int!): Pokemon
+  pokemon(id: ID!): Pokemon
 }

@@ -1,7 +1,6 @@
 module.exports = {
   Query: {
-    pokemon: (id) => ({
-      name: 'pokemon nama',
-    }),
+    pokemon: async (_, args, {service}) =>
+      await service.pokemon.getPokemon(args),
   }
 }

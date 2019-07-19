@@ -2,6 +2,12 @@ const pokemons = require('../data/pokemons.json');
 const idx = require('idx');
 
 module.exports = {
+  getPokemon: (args = {}) => {
+    if (!args.id) return Promise.resolve(null);
+
+    const pokemon = pokemons.find(item => item.id === args.id);
+    return Promise.resolve(pokemon);
+  },
   getPokemons: (args = {}) => {
     const page = args.page || 1;
     const pageSize = args.pageSize || 20;
