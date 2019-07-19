@@ -6,6 +6,10 @@ type PokemonPaginatedList {
   totalPage: Int!
 }
 
+input filterPokemonInput {
+  name: String
+}
+
 type Query {
-  pokemons(page: Int, pageSize: Int): PokemonPaginatedList
+  pokemons(page: Int, pageSize: Int, filter: filterPokemonInput ): PokemonPaginatedList
 }
