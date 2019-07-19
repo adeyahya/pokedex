@@ -2,8 +2,8 @@ import { gql } from 'apollo-boost';
 import pokemonFragment from './fragments/pokemon.query';
 
 export default gql`
-  query pokemons($page: Int, $pageSize: Int) {
-    pokemons(page: $page, pageSize: $pageSize) {
+  query pokemons($page: Int, $pageSize: Int, $filter: filterPokemonInput) {
+    pokemons(page: $page, pageSize: $pageSize, filter: $filter) {
       page
       nextPage
       total

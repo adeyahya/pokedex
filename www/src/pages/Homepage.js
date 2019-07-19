@@ -1,8 +1,10 @@
 // @flow
-import React from 'react';
+/* eslint react-hooks/exhaustive-deps: */
+import React, { useState, useEffect, useRef } from 'react';
 import idx from 'idx';
 import { useQuery } from 'react-apollo-hooks';
 import styled from 'styled-components';
+import TextField from '@material-ui/core/TextField';
 
 import CircularProgress from '@material-ui/core/CircularProgress';
 
@@ -20,6 +22,8 @@ const Grid = styled.div`
 `;
 
 const Homepage = () => {
+  const filterTimeout = useRef(null); 
+  const [ keyword, setKeyword ] = useState(null);
   const { data, loading, fetchMore }: { data: Pokemons, loading: boolean, fetchMore: (any) => void } = useQuery(POKEMONS_QUERY, {
     variables: {
       page: 1,
@@ -36,7 +40,6 @@ const Homepage = () => {
     fetchMore({
       variables: {page: nextPage},
       updateQuery: (prev, { fetchMoreResult }) => {
-        console.log(fetchMoreResult)
         return {
           pokemons: {
             ...fetchMoreResult.pokemons,
@@ -50,16 +53,48 @@ const Homepage = () => {
     });
   }
 
+  useEffect(() => {
+    filterTimeout.current && clearTimeout(filterTimeout.current);
+    filterTimeout.current = setTimeout(() => {
+      fetchMore({
+        variables: {
+          filter: {
+            name: keyword,
+          }
+        },
+        updateQuery: (_, { fetchMoreResult }) => {
+          return fetchMoreResult;
+        }
+      })
+    }, 300);
+  }, [keyword])
+
+  const handleFilterChange = e => {
+    setKeyword(e.currentTarget.value);
+  };
+
   useIntersect(loadMore);
 
   return (
     <div>
+      <TextField
+        id="outlined-search"
+        label="Filter by Name"
+        type="search"
+        margin="normal"
+        variant="outlined"
+        fullWidth
+        onChange={handleFilterChange}
+      />
+      {pokemons.length === 0 && keyword && !loading && (
+        <p>Pokemon with name <strong>{keyword}</strong> can't be found!</p>
+      )}
       <Grid>
         {pokemons.map((item, idx) => (
           <PokemonCard key={idx} name={item.name} image={item.image} id={item.id} />
         ))}
       </Grid>
-      {loading && (
+      {loading && !keyword && (
         <center><CircularProgress /></center>
       )}
     </div>
