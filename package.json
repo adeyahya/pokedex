@@ -5,6 +5,9 @@
   "author": "Ade Yahya Prasetyo <adeyahyaprasetyo@gmail.com>",
   "license": "MIT",
   "private": true,
+  "scripts": {
+    "build:www": "npm run build --prefix www"
+  },
   "workspaces": [
     "www",
     "edge"
