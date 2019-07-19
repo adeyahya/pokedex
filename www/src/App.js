@@ -9,6 +9,8 @@ import Container from "@material-ui/core/Container";
 import AppBar from "./components/AppBar";
 import routes from "./routes";
 
+const GRAPHQL_ENDPOINT = process.env.GRAPHQL_ENDPOINT || 'http://localhost:4000/graphql';
+
 const cache = new InMemoryCache({
   cacheRedirects: {
     Query: {
@@ -22,7 +24,7 @@ const cache = new InMemoryCache({
 
 const client = new ApolloClient({
   cache,
-  uri: "http://localhost:4000/graphql"
+  uri: GRAPHQL_ENDPOINT
 });
 
 function App() {
