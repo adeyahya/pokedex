@@ -4,10 +4,13 @@ import idx from 'idx';
 import { useQuery } from 'react-apollo-hooks';
 import styled from 'styled-components';
 
+import CircularProgress from '@material-ui/core/CircularProgress';
+
 import POKEMONS_QUERY from '../graphql/pokemons.query';
 import { type Pokemons } from '../graphql/pokemons.flow';
 
 import PokemonCard from '../components/PokemonCard';
+import useIntersect from '../hooks/useIntersect';
 
 const Grid = styled.div`
   display: flex;
@@ -17,23 +20,49 @@ const Grid = styled.div`
 `;
 
 const Homepage = () => {
-  const { data, loading } : { data: Pokemons, loading: boolean} = useQuery(POKEMONS_QUERY, {
+  const { data, loading, fetchMore }: { data: Pokemons, loading: boolean, fetchMore: (any) => void } = useQuery(POKEMONS_QUERY, {
     variables: {
       page: 1,
-      pageSize: 100,
-    }
+      pageSize: 50,
+    },
+    notifyOnNetworkStatusChange: true,
   });
-  
-  console.log(data);
 
   const pokemons = idx(data, _ => _.pokemons.items) || [];
+  const nextPage = idx(data, _ => _.pokemons.nextPage);
+
+  function loadMore() {
+    if (!nextPage) return;
+    fetchMore({
+      variables: {page: nextPage},
+      updateQuery: (prev, { fetchMoreResult }) => {
+        console.log(fetchMoreResult)
+        return {
+          pokemons: {
+            ...fetchMoreResult.pokemons,
+            items: [
+              ...prev.pokemons.items,
+              ...fetchMoreResult.pokemons.items,
+            ]
+          }
+        }
+      }
+    });
+  }
+
+  useIntersect(loadMore);
+
   return (
-    <Grid>
-      {pokemons.map((item, idx) => (
-        <PokemonCard key={idx} name={item.name} image={item.image} id={item.id} />
-      ))}
-      {loading && <p>Loading Pokemon</p>}
-    </Grid>
+    <div>
+      <Grid>
+        {pokemons.map((item, idx) => (
+          <PokemonCard key={idx} name={item.name} image={item.image} id={item.id} />
+        ))}
+      </Grid>
+      {loading && (
+        <center><CircularProgress /></center>
+      )}
+    </div>
   )
 }
 
