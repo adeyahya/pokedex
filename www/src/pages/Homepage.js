@@ -1,18 +1,18 @@
 // @flow
 /* eslint react-hooks/exhaustive-deps: */
-import React, { useState, useEffect, useRef } from 'react';
-import idx from 'idx';
-import { useQuery } from 'react-apollo-hooks';
-import styled from 'styled-components';
-import TextField from '@material-ui/core/TextField';
+import React, { useState, useEffect, useRef } from "react";
+import idx from "idx";
+import { useQuery } from "react-apollo-hooks";
+import styled from "styled-components";
+import TextField from "@material-ui/core/TextField";
 
-import CircularProgress from '@material-ui/core/CircularProgress';
+import CircularProgress from "@material-ui/core/CircularProgress";
 
-import POKEMONS_QUERY from '../graphql/pokemons.query';
-import { type Pokemons } from '../graphql/pokemons.flow';
+import POKEMONS_QUERY from "../graphql/pokemons.query";
+import { type Pokemons } from "../graphql/pokemons.flow";
 
-import PokemonCard from '../components/PokemonCard';
-import useIntersect from '../hooks/useIntersect';
+import PokemonCard from "../components/PokemonCard";
+import useIntersect from "../hooks/useIntersect";
 
 const Grid = styled.div`
   display: flex;
@@ -22,15 +22,22 @@ const Grid = styled.div`
 `;
 
 const Homepage = () => {
-  const filterTimeout = useRef(null); 
-  const [ keyword, setKeyword ] = useState(null);
-  const { data, loading, fetchMore }: { data: Pokemons, loading: boolean, fetchMore: (any) => void } = useQuery(POKEMONS_QUERY, {
-    variables: {
-      page: 1,
-      pageSize: 50,
-    },
-    notifyOnNetworkStatusChange: true,
-  });
+  const filterTimeout = useRef(null);
+  const [keyword, setKeyword] = useState(null);
+  const {
+    data,
+    loading,
+    fetchMore
+  }: { data: Pokemons, loading: boolean, fetchMore: any => void } = useQuery(
+    POKEMONS_QUERY,
+    {
+      variables: {
+        page: 1,
+        pageSize: 50
+      },
+      notifyOnNetworkStatusChange: true
+    }
+  );
 
   const pokemons = idx(data, _ => _.pokemons.items) || [];
   const nextPage = idx(data, _ => _.pokemons.nextPage);
@@ -38,17 +45,14 @@ const Homepage = () => {
   function loadMore() {
     if (!nextPage) return;
     fetchMore({
-      variables: {page: nextPage},
+      variables: { page: nextPage },
       updateQuery: (prev, { fetchMoreResult }) => {
         return {
           pokemons: {
             ...fetchMoreResult.pokemons,
-            items: [
-              ...prev.pokemons.items,
-              ...fetchMoreResult.pokemons.items,
-            ]
+            items: [...prev.pokemons.items, ...fetchMoreResult.pokemons.items]
           }
-        }
+        };
       }
     });
   }
@@ -59,15 +63,15 @@ const Homepage = () => {
       fetchMore({
         variables: {
           filter: {
-            name: keyword,
+            name: keyword
           }
         },
         updateQuery: (_, { fetchMoreResult }) => {
           return fetchMoreResult;
         }
-      })
+      });
     }, 300);
-  }, [keyword])
+  }, [keyword]);
 
   const handleFilterChange = e => {
     setKeyword(e.currentTarget.value);
@@ -87,18 +91,27 @@ const Homepage = () => {
         onChange={handleFilterChange}
       />
       {pokemons.length === 0 && keyword && !loading && (
-        <p>Pokemon with name <strong>{keyword}</strong> can't be found!</p>
+        <p>
+          Pokemon with name <strong>{keyword}</strong> can't be found!
+        </p>
       )}
       <Grid>
         {pokemons.map((item, idx) => (
-          <PokemonCard key={idx} name={item.name} image={item.image} id={item.id} />
+          <PokemonCard
+            key={idx}
+            name={item.name}
+            image={item.image}
+            id={item.id}
+          />
         ))}
       </Grid>
       {loading && !keyword && (
-        <center><CircularProgress /></center>
+        <center>
+          <CircularProgress />
+        </center>
       )}
     </div>
-  )
-}
+  );
+};
 
 export default Homepage;
