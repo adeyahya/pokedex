@@ -6,3 +6,15 @@ Pokemon Index built on top of React & GraphQL
 ## Demo
 - client https://happy-stonebraker-2529b4.netlify.com/
 - graphQL https://pokedex-graphql.ihavemind.com/graphql
+
+## Installation & dev mode
+
+This project uisng `Yarn Workspace` you have to use `Yarn` instead of `Npm`
+
+```
+$ yarn
+$ yarn dev
+```
+
+## License
+MIT
