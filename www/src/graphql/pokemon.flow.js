@@ -40,7 +40,8 @@ export type Pokemon = {
   evolutions: Array<Evolution>,
   maxCP: number,
   maxHP: number,
-  Attacks: Attacks
+  attacks: Attacks,
+  __typename: string,
 }
 
 export type GetPokemonType = {

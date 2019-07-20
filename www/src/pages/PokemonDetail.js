@@ -1,10 +1,15 @@
 // @flow
 import React from "react";
 import styled from 'styled-components';
+import idx from 'idx';
 import Typography from "@material-ui/core/Typography";
 import { useQuery } from "react-apollo-hooks";
 import Paper from "@material-ui/core/Paper";
 import { makeStyles } from "@material-ui/core/styles";
+
+import ObjectTable from '../components/ObjectTable';
+
+import CircularProgress from "@material-ui/core/CircularProgress";
 
 import { type GetPokemonType } from "../graphql/pokemon.flow";
 import POKEMON_QUERY from "../graphql/pokemon.query";
@@ -42,18 +47,31 @@ const PokemonDetail = (props: Props) => {
     }
   });
 
-  console.log(data);
+  const {
+    id,
+    image,
+    name,
+    ...rest
+  } = idx(data, _ => _.pokemon) || {};
+
+  if (loading) return (
+    <Paper className={classes.root}>
+      <center>
+        <CircularProgress />
+      </center>
+    </Paper>
+  );;
+
 
   return (
     <Paper className={classes.root}>
-      {!loading && (
-        <FlexWrapper>
-          <img src={data.pokemon.image} alt={data.pokemon.name} />
-          <Typography variant="h4" component="h2">
-            {data.pokemon.name}
-          </Typography>
-        </FlexWrapper>
-      )}
+      <FlexWrapper>
+        <img src={image} alt={name} />
+        <Typography variant="h4" component="h2">
+          {name}
+        </Typography>
+      </FlexWrapper>
+      <ObjectTable object={rest} />
     </Paper>
   );
 };
