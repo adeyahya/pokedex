@@ -6,13 +6,17 @@
   "license": "MIT",
   "private": true,
   "scripts": {
-    "build:www": "npm run build --prefix www"
+    "build:www": "npm run build --prefix www",
+    "develop:www": "npm run start --prefix www",
+    "develop:edge": "npm run start ---prefix edge",
+    "dev": "concurrently --kill-others \"npm run develop:edge\" \"npm run develop:www\""
   },
   "workspaces": [
     "www",
     "edge"
   ],
   "devDependencies": {
+    "concurrently": "^4.1.1",
     "flow-bin": "^0.102.0"
   }
 }
