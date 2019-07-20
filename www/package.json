@@ -11,6 +11,7 @@
     "debounce": "^1.2.0",
     "idx": "^2.5.6",
     "query-string": "^6.8.1",
+    "ramda": "^0.26.1",
     "react": "^16.8.6",
     "react-apollo": "^2.5.8",
     "react-apollo-hooks": "^0.5.0",
